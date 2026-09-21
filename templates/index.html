@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" class="dark"> <!-- Cambia a "" o "dark" según el modo inicial -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_name }}</title>
+    <!-- Tailwind CSS CDN (para desarrollo rápido; luego usarás el output compilado) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-slate-950 text-gray-800 dark:text-gray-100 flex h-screen overflow-hidden">
+
+    <!-- COLUMNA 1: Menú Lateral (Botones con iconos/imágenes) -->
+    <aside class="w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col justify-between p-4">
+        <div>
+            <!-- Logo o Identidad -->
+            <div class="flex items-center gap-3 px-2 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">M</div>
+                <span class="font-bold text-lg tracking-wide">Dashboard</span>
+            </div>
+
+            <!-- Opciones del Menú -->
+            <nav class="space-y-2">
+                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600 text-white font-medium transition-colors">
+                    <!-- Aquí irá tu imagen o icono -->
+                    <span>📊</span> Dashboard
+                </button>
+                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300 transition-colors">
+                    <span>💰</span> Ventas
+                </button>
+                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300 transition-colors">
+                    <span>👥</span> Clientes
+                </button>
+                <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300 transition-colors">
+                    <span>⚙️</span> Parámetros
+                </button>
+            </nav>
+        </div>
+
+        <!-- Botón inferior o indicador de sesión -->
+        <div class="border-t border-gray-200 dark:border-slate-800 pt-4 text-xs text-gray-500">
+            Usuario Activo
+        </div>
+    </aside>
+
+    <!-- CONTENEDOR DERECHO (Columna Superior + Columna Central) -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden">
+        
+        <!-- COLUMNA 2: Barra Superior (Nombre de la app, fecha e indicadores) -->
+        <header class="h-16 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between px-6 shadow-sm z-10">
+            <div class="flex items-center gap-4">
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">{{ app_name }}</h1>
+            </div>
+            
+            <!-- Indicadores y Fecha -->
+            <div class="flex items-center gap-6 text-sm">
+                <span id="current-date" class="text-gray-500 dark:text-gray-400">Lunes, 21 Sep 2026</span>
+                <div class="bg-emerald-500/10 text-emerald-500 px-3 py-1 rounded-full text-xs font-semibold">
+                    ● Sistema Operativo
+                </div>
+                <!-- Botón temporal para alternar modo claro/oscuro -->
+                <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded-lg bg-gray-200 dark:bg-slate-800 text-xs">
+                    🌓 Tema
+                </button>
+            </div>
+        </header>
+
+        <!-- COLUMNA 3: Columna Central (Detalle de la opción seleccionada) -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-slate-950">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold">Bienvenido al Panel</h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Selecciona una opción del menú lateral para ver el detalle de la información.</p>
+                </div>
+
+                <!-- Espacio de trabajo dinámico (Grid de ejemplo) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Indicador 1</h3>
+                        <p class="text-2xl font-bold mt-2">$0.00</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Indicador 2</h3>
+                        <p class="text-2xl font-bold mt-2">0</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Indicador 3</h3>
+                        <p class="text-2xl font-bold mt-2">0%</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+</body>
+</html>
