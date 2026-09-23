@@ -8,6 +8,12 @@
 
 **Input**: User description: "/specify login Desarrollar el módulo de autenticación (Login) y gestión de control de acceso para la aplicación web de gestión comercial, integrándose con la base de datos SQLite existente (archivo app.db, tabla \"usuarios\"). Requisitos: validar credenciales mediante correo y hash seguro, restringir la creación de usuarios a Administrador, mostrar errores claros sin revelar detalles internos, confirmar acceso exitoso y redirigir a la vista comercial principal, cumplir seguridad por defecto, validación server-side, diseño responsive/moderno e incluir pruebas automatizadas básicas."
 
+## Clarifications
+
+### Session 2026-09-23
+
+- Q: ¿Debe el modelo `usuarios` incluir un campo `activo` para permitir activar o desactivar cuentas? → A: Sí; añadir `activo` obligatorio con valor predeterminado `true`.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Iniciar sesión con credenciales válidas (Priority: P1)
@@ -131,13 +137,15 @@ que los campos, mensajes, foco y acciones principales son visibles y operables.
   el registro del usuario y MUST rechazar cualquier contraseña almacenada o comparada en texto
   plano.
 - **FR-004**: El sistema MUST crear una sesión autenticada solo cuando el usuario existe, sus
-  credenciales son válidas y su cuenta puede acceder al sistema.
+  credenciales son válidas y su campo `activo` es `true`.
 - **FR-005**: Tras un acceso válido, el sistema MUST mostrar una confirmación segura y redirigir
   al usuario a la vista comercial principal.
 - **FR-006**: Ante correo inexistente o contraseña incorrecta, el sistema MUST impedir la sesión
   y mostrar un mensaje genérico y claro que no permita distinguir cuál credencial falló.
 - **FR-007**: El servidor MUST validar presencia, formato, longitud y contenido permitido de las
   entradas antes de consultar o modificar la base de datos.
+- **FR-007a**: El modelo `usuarios` MUST incluir el campo obligatorio `activo`, de tipo booleano,
+  con valor predeterminado `true` y sin permitir valores nulos.
 - **FR-008**: El sistema MUST restringir la creación de usuarios al rol `Administrador`, con la
   autorización aplicada en el backend para cada solicitud y no únicamente en la interfaz.
 - **FR-009**: El sistema MUST denegar la creación de usuarios a personas no autenticadas y a
@@ -161,7 +169,7 @@ que los campos, mensajes, foco y acciones principales son visibles y operables.
 ### Key Entities *(include if feature involves data)*
 
 - **Usuario autenticable**: Registro de `usuarios` en `app.db` identificado por correo, hash de
-  contraseña, rol y estado necesario para decidir si puede iniciar sesión.
+  contraseña, rol y campo `activo`; solo los registros activos pueden iniciar sesión.
 - **Sesion autenticada**: Estado temporal que representa que una persona validó sus credenciales y
   puede acceder a operaciones según su rol.
 - **Permiso de creación de usuarios**: Regla de autorización que permite la operación únicamente
@@ -173,8 +181,8 @@ que los campos, mensajes, foco y acciones principales son visibles y operables.
 
 - **SC-001**: El 100% de los casos de prueba con credenciales válidas crea una sesión y llega a
   la vista comercial principal.
-- **SC-002**: El 100% de los casos con correo inexistente, contraseña incorrecta o entrada
-  inválida rechaza el acceso sin crear sesión.
+- **SC-002**: El 100% de los casos con correo inexistente, contraseña incorrecta, cuenta
+  desactivada o entrada inválida rechaza el acceso sin crear sesión.
 - **SC-003**: El 100% de las solicitudes de creación realizadas por Administrador se autoriza
   cuando los datos son válidos, y el 100% de las solicitudes de Ventas, Gerencia o personas no
   autenticadas se rechaza sin modificar usuarios.
@@ -190,7 +198,8 @@ que los campos, mensajes, foco y acciones principales son visibles y operables.
 ## Assumptions
 
 - La tabla `usuarios` ya existe en `app.db` conforme al modelo de la feature
-  `001-modelo-usuarios-roles`, incluyendo correo normalizado, hash seguro y rol.
+  `001-modelo-usuarios-roles`, incluyendo correo normalizado, hash seguro, rol y el campo
+  `activo` obligatorio con valor predeterminado `true`.
 - La primera versión utiliza una sesión web gestionada por la aplicación; el mecanismo concreto
   de cookies, expiración, renovación y protección CSRF se definirá durante la planificación sin
   debilitar los requisitos de seguridad.
